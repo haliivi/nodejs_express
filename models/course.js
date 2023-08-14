@@ -12,7 +12,7 @@ class Course {
 
     toJSON() {
         return {
-            this: this.title,
+            title: this.title,
             price: this.price,
             urlImg: this.urlImg,
             id: this.id
@@ -45,6 +45,11 @@ class Course {
                 }
             )
         })
+    }
+
+    static async getById(id) {
+        const courses = await Course.getAll()
+        return courses.find(c => c.id === id)
     }
 }
 
