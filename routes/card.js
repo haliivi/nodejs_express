@@ -15,6 +15,7 @@ router.get('/', async (req, res) => {
         'card',
         {
             title: 'Корзина',
+            isCard: true,
             card
         }
     )
