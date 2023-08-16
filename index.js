@@ -1,3 +1,4 @@
+const dotenv = require('dotenv')
 const express = require('express')
 const path = require('path')
 const exphbs = require('express-handlebars')
@@ -5,6 +6,9 @@ const homeRoutes = require('./routes/home')
 const addRoutes = require('./routes/add')
 const coursesRoutes = require('./routes/courses')
 const cardRoutes = require('./routes/card')
+const mongoose = require('mongoose')
+
+dotenv.config()
 
 const app = express()
 
@@ -24,8 +28,19 @@ app.use('/add', addRoutes)
 app.use('/courses', coursesRoutes)
 app.use('/card', cardRoutes)
 
-const PORT = process.env.PORT || 3000
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
-})
+async function start() {
+    const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER_NAME}.she4wsi.mongodb.net/?retryWrites=true&w=majority`
+    const PORT = process.env.PORT || 3000
+    
+    try {
+        await mongoose.connect(uri, {useNewUrlParser: true})
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`)
+        })
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+start()
