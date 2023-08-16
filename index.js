@@ -30,7 +30,7 @@ app.use('/card', cardRoutes)
 
 
 async function start() {
-    const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER_NAME}.she4wsi.mongodb.net/?retryWrites=true&w=majority`
+    const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER_NAME}.she4wsi.mongodb.net/shop`
     const PORT = process.env.PORT || 3000
     
     try {
