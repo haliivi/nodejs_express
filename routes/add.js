@@ -19,7 +19,8 @@ router.post('/', async (req, res) => {
     const course = new Course({
         title: title,
         price: price,
-        urlImg: urlImg
+        urlImg: urlImg,
+        userId: req.user
     })
     try {
         await course.save()
