@@ -1,8 +1,9 @@
 const {Router} = require('express')
 const router = Router()
 const Order = require('../models/MongoDB/order')
+const auth = require('../middleware/auth')
 
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
     try {
         const orders = await Order.find({'user.userId': req.user._id}).populate('user.userId').lean()
         res.render(
@@ -23,7 +24,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
         const user = await req.user.populate('card.items.courseId')
         const courses = user.card.items.map(c => ({

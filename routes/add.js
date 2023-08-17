@@ -1,9 +1,10 @@
 const {Router} = require('express')
 // const Course = require('../models/JSON/course')
 const Course = require('../models/MongoDB/course')
+const auth = require('../middleware/auth')
 const router = Router()
 
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
     res.render(
         'add',
         {
@@ -13,7 +14,7 @@ router.get('/', (req, res) => {
     )
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     // const course = new Course(req.body)
     const {title, price, urlImg} = req.body
     const course = new Course({
