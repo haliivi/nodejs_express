@@ -56,4 +56,9 @@ user.methods.removeCardItem = function (id) {
     return this.save()
 }
 
+user.methods.clearCard = function () {
+    this.card = {items: []}
+    return this.save()
+}
+
 module.exports = model('User', user)
