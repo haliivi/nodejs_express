@@ -13,6 +13,7 @@ const authRoutes = require('./routes/auth')
 const mongoose = require('mongoose')
 const User = require('./models/MongoDB/user')
 const varsMiddleware = require('./middleware/vars')
+const userMiddleware = require('./middleware/user')
 
 dotenv.config()
 
@@ -52,6 +53,7 @@ app.use(session({
     store
 }))
 app.use(varsMiddleware)
+app.use(userMiddleware)
 
 app.use('/', homeRoutes)
 app.use('/add', addRoutes)
