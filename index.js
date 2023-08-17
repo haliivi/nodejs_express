@@ -4,6 +4,7 @@ const path = require('path')
 const exphbs = require('express-handlebars')
 const session = require('express-session')
 const MongoStore = require('connect-mongodb-session')(session)
+const csurf = require('csurf')
 const homeRoutes = require('./routes/home')
 const addRoutes = require('./routes/add')
 const coursesRoutes = require('./routes/courses')
@@ -52,6 +53,7 @@ app.use(session({
     saveUninitialized: false,
     store
 }))
+app.use(csurf())
 app.use(varsMiddleware)
 app.use(userMiddleware)
 
