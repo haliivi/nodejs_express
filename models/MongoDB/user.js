@@ -5,7 +5,8 @@ const user = new Schema({
         type: String,
         required: true
     },
-    name: {
+    name: String,
+    password: {
         type: String,
         required: true
     },
@@ -46,7 +47,6 @@ user.methods.addToCard = function (course) {
 user.methods.removeCardItem = function (id) {
     let items = [...this.card.items]
     const idx = items.findIndex(c => c.courseId.toString() === id.toString())
-    console.log(items)
     if (items[idx].count === 1) {
         items = items.filter(c => c.courseId.toString() !== id.toString())
     } else {
