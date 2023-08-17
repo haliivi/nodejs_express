@@ -2,6 +2,7 @@ const dotenv = require('dotenv')
 const express = require('express')
 const path = require('path')
 const exphbs = require('express-handlebars')
+const session = require('express-session')
 const homeRoutes = require('./routes/home')
 const addRoutes = require('./routes/add')
 const coursesRoutes = require('./routes/courses')
@@ -10,6 +11,7 @@ const orderRoutes = require('./routes/order')
 const authRoutes = require('./routes/auth')
 const mongoose = require('mongoose')
 const User = require('./models/MongoDB/user')
+const varsMiddleware = require('./middleware/vars')
 
 dotenv.config()
 
@@ -35,6 +37,12 @@ app.use(async (req, res, next) => {
 })
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}))
+app.use(session({
+    secret: 'some secret value',
+    resave: false,
+    saveUninitialized: false,
+}))
+app.use(varsMiddleware)
 
 app.use('/', homeRoutes)
 app.use('/add', addRoutes)
