@@ -3,6 +3,7 @@ const express = require('express')
 const path = require('path')
 const exphbs = require('express-handlebars')
 const session = require('express-session')
+const MongoStore = require('connect-mongodb-session')(session)
 const homeRoutes = require('./routes/home')
 const addRoutes = require('./routes/add')
 const coursesRoutes = require('./routes/courses')
@@ -15,7 +16,14 @@ const varsMiddleware = require('./middleware/vars')
 
 dotenv.config()
 
+const uriMongoDB = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER_NAME}.she4wsi.mongodb.net/shop`
+
 const app = express()
+
+const store = new MongoStore({
+    collection: 'sessions',
+    uri: uriMongoDB
+})
 
 const hbs = exphbs.create({
     defaultLayout: 'main',
@@ -41,6 +49,7 @@ app.use(session({
     secret: 'some secret value',
     resave: false,
     saveUninitialized: false,
+    store
 }))
 app.use(varsMiddleware)
 
@@ -53,11 +62,9 @@ app.use('/auth', authRoutes)
 
 
 async function start() {
-    const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER_NAME}.she4wsi.mongodb.net/shop`
     const PORT = process.env.PORT || 3000
-    
     try {
-        await mongoose.connect(uri, {useNewUrlParser: true})
+        await mongoose.connect(uriMongoDB, {useNewUrlParser: true})
         // const candidate = await User.findOne()
         // if (!candidate) {
         //     const user = new User({
