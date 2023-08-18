@@ -1,4 +1,4 @@
-const dotenv = require('dotenv')
+require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const exphbs = require('express-handlebars')
@@ -15,8 +15,6 @@ const authRoutes = require('./routes/auth')
 const mongoose = require('mongoose')
 const varsMiddleware = require('./middleware/vars')
 const userMiddleware = require('./middleware/user')
-
-dotenv.config()
 
 const uriMongoDB = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER_NAME}.she4wsi.mongodb.net/shop`
 
@@ -48,7 +46,7 @@ app.set('views', './views')
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.urlencoded({extended: true}))
 app.use(session({
-    secret: 'some secret value',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store

@@ -1,7 +1,18 @@
 const {Router} = require('express')
 const User = require('../models/MongoDB/user')
 const bcrypt = require('bcryptjs')
+const nodemailer = require('nodemailer')
+const registrationMail = require('../emails/registration')
 const router = Router()
+
+const transport = nodemailer.createTransport({
+   host: process.env.SENDGRID_HOST,
+   port: process.env.SENDGRID_PORT,
+   auth: {
+       user: process.env.SENDGRID_API_USER,
+       pass: process.env.SENDGRID_API_KEY
+   }
+})
 
 router.get('/login', async (req, res) => {
     res.render(
@@ -53,6 +64,16 @@ router.post('/register', async (req, res) => {
             const user = new User({email, name, password: hashPassword, card: {items: []}})
             await user.save()
             res.redirect('/auth/login#login')
+            transport.sendMail(
+                registrationMail(email),
+                function(error, info) {
+                    if (error) {
+                      console.log(error);
+                    } else {
+                      console.log('Email sent: ' + info.response);
+                    }
+                }
+            )
         }
     } catch (e) {
         console.log(e)
