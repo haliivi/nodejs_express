@@ -11,7 +11,7 @@
                 <p class="alert">{{loginError}}</p>
             {{/if}}
             <h1>Войти в магазин</h1>
-            <form action="/auth/login" method="POST">
+            <form action="/auth/login" method="POST" novalidate>
                 <div class="input-field">
                     <input id="email" name="email" type="email" class="validate" required>
                     <label for="email">Email</label>
