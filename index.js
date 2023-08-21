@@ -15,6 +15,7 @@ const authRoutes = require('./routes/auth')
 const mongoose = require('mongoose')
 const varsMiddleware = require('./middleware/vars')
 const userMiddleware = require('./middleware/user')
+const errorMiddleware = require('./middleware/error')
 
 const uriMongoDB = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER_NAME}.she4wsi.mongodb.net/shop`
 
@@ -63,6 +64,7 @@ app.use('/courses', coursesRoutes)
 app.use('/card', cardRoutes)
 app.use('/order', orderRoutes)
 app.use('/auth', authRoutes)
+app.use(errorMiddleware)
 
 
 async function start() {
