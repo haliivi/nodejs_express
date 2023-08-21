@@ -46,3 +46,14 @@ exports.loginValidators = [
             return !areSame ? Promise.reject('Неверный пароль') : true
         })
 ]
+
+exports.courseValidators = [
+    body('title')
+        .isLength({min: 3})
+        .withMessage('Минимальная длинна названия 3 символа')
+        .trim(),
+    body('price')
+        .isNumeric()
+        .withMessage('Введите корректную цену'),
+    body('urlImg', 'Введите корректный url картинки').isURL()
+]

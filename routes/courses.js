@@ -3,6 +3,8 @@ const {Router} = require('express')
 const Course = require('../models/MongoDB/course')
 const auth = require('../middleware/auth')
 const router = Router()
+const {courseValidators} = require('../utils/validators')
+const {validationResult} = require('express-validator')
 
 function isOwner (course, req) {
     return course.userId.toString() === req.user._id.toString()
@@ -50,6 +52,10 @@ router.post('/edit', auth, async (req, res) => {
     // await Course.update(req.body)
     try {
         const {id} = req.body
+        const errors = validationResult(req)
+        if (!errors.isEmpty()) {
+            return res.status(422).redirect(`/courses/${id}/edit?allow=true`)
+        }
         delete req.body.id
         const course = await Course.findById(id)
         if (!isOwner(course, req)) return res.redirect('/courses')
