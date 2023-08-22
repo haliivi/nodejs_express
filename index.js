@@ -17,6 +17,7 @@ const mongoose = require('mongoose')
 const varsMiddleware = require('./middleware/vars')
 const userMiddleware = require('./middleware/user')
 const errorMiddleware = require('./middleware/error')
+const fileMiddleware = require('./middleware/file')
 
 const uriMongoDB = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER_NAME}.she4wsi.mongodb.net/shop`
 
@@ -47,6 +48,7 @@ app.set('views', './views')
 //     }
 // })
 app.use(express.static(path.join(__dirname, 'public')))
+app.use('/data/images', express.static(path.join(__dirname, 'data', 'images')))
 app.use(express.urlencoded({extended: true}))
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -54,6 +56,7 @@ app.use(session({
     saveUninitialized: false,
     store
 }))
+app.use(fileMiddleware.single('avatar'))
 app.use(csurf())
 app.use(flash())
 app.use(varsMiddleware)

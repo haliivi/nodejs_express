@@ -27,7 +27,8 @@ const user = new Schema({
                 }
             }
         ]
-    }
+    },
+    avatarUrl: String
 })
 
 user.methods.addToCard = function (course) {
